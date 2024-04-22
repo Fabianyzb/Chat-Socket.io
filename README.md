@@ -1,0 +1,1 @@
+Nota: Agregar "type": "module", abajo de "main" para exportar express y ocupar los modulos de js 
