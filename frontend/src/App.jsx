@@ -1,40 +1,46 @@
-import io from 'socket.io-client'
-import { useState, useEffect } from 'react'
-import { symbolName } from 'typescript'
+import io from 'socket.io-client';
+import React, { useState, useEffect } from 'react';
 
-const socket = io("/")
+const socket = io("/");
 
 function App() {
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
 
   const handleSubmit = (e) => {
-    e.preventDefault(); //evita que el form refresque la pagina
-    socket.emit("message", message)
-  }
+    e.preventDefault(); // Evita que el formulario refresque la página
+    socket.emit("message", message);
+  };
 
   useEffect(() => {
-    socket.on('message', message => {
-      console.log(message)
-    })
+    socket.on('message', (receivedMessage) => {
+      console.log(receivedMessage);
+      setMessages([...messages, receivedMessage]);
+    });
 
     return () => {
-
-    }
-  }, [
-
-  ])
-
+      // Limpieza al desmontar el componente (opcional)
+    };
+  }, [messages]);
 
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder='Write your message...'
-          onChange={(e) => setMessage(e.target.value)} /* <- actualiza valor del input cuando se cambia el mensaje */
+        <input
+          type="text"
+          placeholder='Write your message...'
+          onChange={(e) => setMessage(e.target.value)} /* Actualiza el valor del input cuando se cambia el mensaje */
         />
         <button>Send</button>
       </form>
+
+      <ul>
+        {messages.map((msg, i) => (
+          <li key={i}>{msg}</li>
+        ))}
+      </ul>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
