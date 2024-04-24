@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { symbolName } from 'typescript'
 
 const socket = io("/")
@@ -9,8 +9,21 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); //evita que el form refresque la pagina
-    console.log(message);
+    socket.emit("message", message)
   }
+
+  useEffect(() => {
+    socket.on('message', message => {
+      console.log(message)
+    })
+
+    return () => {
+
+    }
+  }, [
+
+  ])
+
 
   return (
     <>

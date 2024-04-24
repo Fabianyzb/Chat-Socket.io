@@ -14,6 +14,12 @@ const io = new SocketServer(server, {
 /* escuchar evento const io */
 io.on("connection", (socket) => {
   console.log("Client connected");
+
+  socket.on("message", (data) => {
+    console.log(data);
+    /* cuando escuche el event message vas a recibir datos */
+    socket.broadcast.emit("message", data);
+  });
 });
 
 server.listen(3000);
