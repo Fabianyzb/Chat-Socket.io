@@ -10,5 +10,6 @@ Este proyecto es un chat en tiempo real construido con React, Node.js y Socket.i
 
 ## Capturas de pantalla
 
-_Inserta aquí algunas capturas de pantalla de tu aplicación en funcionamiento._
+![alt text](docs/foto.png)
+
 
