@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
-// const socket = io("http://localhost:3001");
 const socket = io("/");
 
 export default function App() {
@@ -9,7 +8,7 @@ export default function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    socket.on("message", receiveMessage)
+    socket.on("message", receiveMessage);
 
     return () => {
       socket.off("message", receiveMessage);
@@ -17,8 +16,7 @@ export default function App() {
   }, []);
 
   const receiveMessage = (message) =>
-    setMessages(state => [message, ...state]);
-
+    setMessages((state) => [message, ...state]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -26,33 +24,38 @@ export default function App() {
       body: message,
       from: "Me",
     };
-    setMessages(state => [newMessage, ...state]);
+    setMessages((state) => [newMessage, ...state]);
     setMessage("");
     socket.emit("message", newMessage.body);
   };
 
   return (
-    <div className="h-screen bg-zinc-800 text-white flex items-center justify-center">
-      <form onSubmit={handleSubmit} className="bg-zinc-900 p-10">
-        <h1 className="text-2xl font-bold my-2">Chat React</h1>
+    <div className="h-screen bg-gradient-to-r from-blue-400 to-orange-500 via-purple-500 animate-gradient-x text-white flex items-center justify-center">
+      <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold mb-4">Chat React</h1>
         <input
           name="message"
           type="text"
           placeholder="Write your message..."
           onChange={(e) => setMessage(e.target.value)}
-          className="border-2 border-zinc-500 p-2 w-full text-black"
+          className="border-2 border-gray-500 p-2 w-full text-black rounded-md"
           value={message}
           autoFocus
         />
-
-        <ul className="h-80 overflow-y-auto">
+        <button
+          type="submit"
+          className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md"
+        >
+          Send
+        </button>
+        <ul className="mt-6 h-80 overflow-y-auto">
           {messages.map((message, index) => (
             <li
               key={index}
-              className={`my-2 p-2 table text-sm rounded-md ${message.from === "Me" ? "bg-sky-700 ml-auto" : "bg-black"
+              className={`my-2 p-2 table text-sm rounded-md ${message.from === "Me" ? "bg-blue-600 ml-auto" : "bg-gray-700"
                 }`}
             >
-              <b>{message.from}</b>:{message.body}
+              <b>{message.from}</b>: {message.body}
             </li>
           ))}
         </ul>
